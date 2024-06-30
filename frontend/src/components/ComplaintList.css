@@ -1,0 +1,33 @@
+/* ComplaintList.css */
+
+.complaint-list {
+    margin-top: 20px;
+  }
+  
+  .complaint-list h2 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .complaint-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .complaint-list li {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .complaint-list li a {
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .complaint-list li a:hover {
+    color: #007bff;
+  }
+  

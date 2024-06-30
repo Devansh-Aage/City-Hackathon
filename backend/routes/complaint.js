@@ -6,6 +6,7 @@ const { body, validationResult } = require("express-validator");
 var jwt = require("jsonwebtoken");
 const fetchuser = require("../middleware/fetchuser");
 const router = express.Router();
+const User = require("../models/User");
 
 router.post("/addcomplaints", fetchuser, async (req, res) => {
   try {
@@ -38,6 +39,23 @@ router.post("/addcomplaints", fetchuser, async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Unexpected error occurred ");
+  }
+});
+
+// GET complaints filtered by department (for admin)
+router.get("/complaints", fetchuser, async (req, res) => {
+  try {
+    let complaints;
+    const user = await User.findById(req.user.id);
+    if (user.isAdmin) {
+      complaints = await Complaint.find({ dept: user.dept });
+    } else {
+      complaints = await Complaint.find({ user: req.user.id });
+    }
+    res.json(complaints);
+  } catch (error) {
+    console.error("Error fetching complaints:", error);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
