@@ -7,6 +7,7 @@ var jwt = require("jsonwebtoken");
 const fetchuser = require("../middleware/fetchuser");
 const router = express.Router();
 const User = require("../models/User");
+const mongoose = require('mongoose');
 
 router.post("/addcomplaints", fetchuser, async (req, res) => {
   try {
@@ -89,16 +90,24 @@ router.put("/reviewcomplaint/:id", async (req, res) => {
   }
 });
 
+
 router.put("/upvote/:id", async (req, res) => {
   try {
-    const complaint = await Complaint.findById(req.params.id);
+    const { id } = req.params;
+
+    // Check if the id is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ msg: "Invalid ID format" });
+    }
+
+    const complaint = await Complaint.findById(id);
 
     if (!complaint) {
       return res.status(404).json({ msg: "Complaint not found" });
     }
 
     // Increment upvotes count by 1
-    complaint.upvotes += 1;
+    complaint.upvote += 1;
 
     const updatedComplaint = await complaint.save();
 

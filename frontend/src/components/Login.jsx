@@ -27,11 +27,11 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
+      <div className="w-full max-w-md bg-white/20 backdrop-blur-md p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-6 text-white text-center">Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block mb-2">Email address:</label>
+            <label className="block mb-2 text-white">Email address:</label>
             <input
               type="email"
               value={email}
@@ -41,7 +41,7 @@ const Login = () => {
             />
           </div>
           <div className="mb-6">
-            <label className="block mb-2">Password:</label>
+            <label className="block mb-2 text-white">Password:</label>
             <input
               type="password"
               value={password}
@@ -52,14 +52,14 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors"
+            className="w-full font-bold text-base bg-pink-700 text-white py-2 rounded-lg hover:bg-pink-600 transition-colors"
           >
             Submit
           </button>
         </form>
-        <p className="mt-4 text-center">
+        <p className="mt-4 text-center text-white">
           Don't have an account?{" "}
-          <Link to="/register" className="text-blue-500 font-bold hover:underline">
+          <Link to="/register" className="text-pink-800 font-bold hover:underline">
             Register here
           </Link>
         </p>

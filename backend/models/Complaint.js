@@ -35,9 +35,9 @@ const ComplaintSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  upvotes: {
+  upvote: {
     type: Number,
-    default: 0,
+    default:0
   },
 });
 
