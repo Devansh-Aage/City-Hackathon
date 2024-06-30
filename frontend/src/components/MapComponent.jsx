@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 
 const MapComponent = () => {
   const [complaints, setComplaints] = useState([]);
@@ -58,18 +59,21 @@ const MapComponent = () => {
     setFilteredComplaints(filteredData);
   }, [complaints, filterByDept, filterByStatus]);
 
+  // Function to determine marker color based on department
+  const getMarkerColor = (dept) => {
+    switch (dept) {
+      case "road":
+        return "red";
+      case "water":
+        return "blue";
+      default:
+        return "green";
+    }
+  };
+
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "500px",
-        display: "flex",
-        justifyContent: "center",
-        flexDirection: "column", // Ensure content aligns properly
-        alignItems: "center", // Center map vertically
-      }}
-    >
-      <div style={{ marginBottom: "10px" }}>
+    <div className="map-container">
+      <div className="filters">
         <label>
           Filter by Department:
           <select
@@ -82,9 +86,7 @@ const MapComponent = () => {
             {/* Add more department options as needed */}
           </select>
         </label>
-      </div>
 
-      <div style={{ marginBottom: "10px" }}>
         <label>
           Filter by Status:
           <select
@@ -101,19 +103,36 @@ const MapComponent = () => {
       <MapContainer
         center={[19.1861, 72.9757]}
         zoom={12}
-        style={{ width: "80%", height: "100%" }}
+        style={{ width: "100%", height: "calc(100vh - 120px)" }}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {filteredComplaints.map((complaint) => (
           <Marker
             key={complaint._id}
-            position={[complaint.latitude, complaint.longitude]}
+            position={[
+              parseFloat(complaint.latitude),
+              parseFloat(complaint.longitude),
+            ]}
+            icon={L.icon({
+              iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${getMarkerColor(
+                complaint.dept
+              )}.png`,
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41],
+            })}
           >
             <Popup>
               <div>
                 <h3>{complaint.title}</h3>
                 <p>{complaint.desc}</p>
                 <p>Status: {complaint.status}</p>
+                {complaint.status === "Reviewed" && (
+                  <p style={{ color: "red", fontWeight: "bold" }}>
+                    REVIEWED Complaint
+                  </p>
+                )}
                 {/* Add more details as needed */}
               </div>
             </Popup>

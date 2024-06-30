@@ -12,26 +12,37 @@ const mongoose = require("mongoose");
 // Complaint routes (complaintRoutes.js)
 router.post("/addcomplaints", fetchuser, async (req, res) => {
   try {
-    const { title, desc, dept, imgPath, latitude, longitude } = req.body;
+    const complaints = req.body;
 
-    // If there are errors, return bad requests and also errors
+    if (!Array.isArray(complaints)) {
+      return res.status(400).json({ error: "Expected an array of complaints" });
+    }
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const complaint = new Complaint({
-      title,
-      desc,
-      dept,
-      imgPath,
-      latitude,
-      longitude,
-      user: req.user.id,
-    });
+    const savedComplaints = [];
 
-    const savedComplaint = await complaint.save();
-    res.json(savedComplaint);
+    for (const complaintData of complaints) {
+      const { title, desc, dept, imgPath, latitude, longitude } = complaintData;
+
+      const complaint = new Complaint({
+        title,
+        desc,
+        dept,
+        imgPath,
+        latitude,
+        longitude,
+        user: req.user.id,
+      });
+
+      const savedComplaint = await complaint.save();
+      savedComplaints.push(savedComplaint);
+    }
+
+    res.json(savedComplaints);
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Unexpected error occurred");

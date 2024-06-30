@@ -98,7 +98,7 @@ const ComplaintList = ({ user }) => {
       console.error("Error reviewing complaint:", error);
     }
   };
-console.log(complaints);
+
   const logout = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -106,20 +106,6 @@ console.log(complaints);
 
   return (
     <div className="w-full h-full">
-      <div className="w-full flex justify-between items-center p-4 sticky top-0 z-50">
-        <Navbar/>
-        {user && (
-          <div className="hidden lg:flex items-center gap-4 bg-purple-50 rounded-lg p-2">
-            <div className="text-base font-semibold">{user?.name}</div>
-            <button
-              onClick={logout}
-              className="bg-red-500 text-white px-3 py-1 rounded-md text-sm hover:bg-red-600 transition-colors"
-            >
-              Logout
-            </button>
-          </div>
-        )}
-      </div>
       <div className="">
         <h2 className="text-center mb-4 text-xl font-bold">Complaints</h2>
         <ul className="list-none max-w-[70vw] mx-auto">
@@ -137,12 +123,17 @@ console.log(complaints);
                 Department: {complaint.dept}
               </p>
               {!user?.isAdmin && (
-                <button
-                  onClick={() => handleUpvote(complaint._id)}
-                  className="bg-blue-500 text-white px-3 py-1 rounded mt-2 hover:bg-blue-600"
-                >
-                  Upvote
-                </button>
+                <div className="flex items-center gap-2 mt-2">
+                  <button
+                    onClick={() => handleUpvote(complaint._id)}
+                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                  >
+                    Upvote
+                  </button>
+                  <span className="text-gray-700">
+                    {complaint.upvotes.length} Upvotes
+                  </span>
+                </div>
               )}
               {complaint.review && (
                 <div className="mt-2">

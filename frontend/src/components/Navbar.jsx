@@ -1,24 +1,30 @@
-import React from 'react'
+import React from "react";
 import { Link } from "react-router-dom";
-
 
 const Navbar = () => {
   return (
-    <div className='sticky top-4 border border-pink-200 shadow-md w-[40%] max-w-screen-lg mx-auto px-5 font-semibold text-lg  py-2.5 flex justify-around items-center rounded-lg bg-pink-700'>
-      <Link to="/" className="justify-self-start logo text-white">
-        Smart City
-      </Link>
-      <div className="links flex w-[50%] justify-evenly">
-        <Link to="/complaints" className="hover:text-purple-200 text-white">
-          Forum
+    <div className="sticky top-0 z-50 bg-pink-700 shadow-md">
+      <div className="max-w-screen-lg mx-auto px-4 py-2 flex items-center justify-between">
+        <Link to="/" className="text-white text-xl font-semibold">
+          Smart City
         </Link>
-        <Link to="/addcomplaint" className="hover:text-purple-200 text-white">
-          Raise a Complaint
-        </Link>
-        
+        <div className="flex gap-4">
+          {/* <Link
+            to="/complaints"
+            className="text-white hover:text-purple-200 transition-colors"
+          >
+            Forum
+          </Link>
+          <Link
+            to="/addcomplaint"
+            className="text-white hover:text-purple-200 transition-colors"
+          >
+            Raise a Complaint
+          </Link> */}
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

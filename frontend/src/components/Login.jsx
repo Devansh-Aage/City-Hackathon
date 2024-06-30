@@ -27,11 +27,13 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="w-full max-w-md bg-white/20 backdrop-blur-md p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-semibold mb-6 text-white text-center">Login</h2>
+      <div className="w-full max-w-md bg-black/20 backdrop-blur-md p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-6 text-black text-center">
+          Login
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block mb-2 text-white">Email address:</label>
+            <label className="block mb-2 text-black">Email address:</label>
             <input
               type="email"
               value={email}
@@ -41,7 +43,7 @@ const Login = () => {
             />
           </div>
           <div className="mb-6">
-            <label className="block mb-2 text-white">Password:</label>
+            <label className="block mb-2 text-black">Password:</label>
             <input
               type="password"
               value={password}
@@ -57,9 +59,12 @@ const Login = () => {
             Submit
           </button>
         </form>
-        <p className="mt-4 text-center text-white">
+        <p className="mt-4 text-center text-black">
           Don't have an account?{" "}
-          <Link to="/register" className="text-pink-800 font-bold hover:underline">
+          <Link
+            to="/register"
+            className="text-pink-800 font-bold hover:underline"
+          >
             Register here
           </Link>
         </p>
