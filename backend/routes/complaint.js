@@ -50,7 +50,7 @@ router.get("/complaints", fetchuser, async (req, res) => {
     if (user.isAdmin) {
       complaints = await Complaint.find({ dept: user.dept });
     } else {
-      complaints = await Complaint.find({ user: req.user.id });
+      complaints = await Complaint.find({});
     }
     res.json(complaints);
   } catch (error) {
@@ -63,25 +63,49 @@ router.put("/reviewcomplaint/:id", async (req, res) => {
   try {
     const { review } = req.body;
 
-    const newComplaint = {};
-    if (review) {
-      newComplaint.review = review;
-      newComplaint.status = "Reviewed";
+    // Check if review field is already populated
+    const complaint = await Complaint.findById(req.params.id);
+    if (!complaint) return res.status(404).send("Complaint not found");
+
+    if (complaint.review) {
+      return res.status(400).json({ msg: "Review already added" });
     }
 
-    //If there are errors , return bad requests and also errors
-    let complaint = await Complaint.findById(req.params.id);
-    if (!complaint) res.status(404).send("Not Found");
+    const newComplaint = {
+      review,
+      status: "Reviewed",
+    };
 
-    complaint = await Complaint.findByIdAndUpdate(
+    const updatedComplaint = await Complaint.findByIdAndUpdate(
       req.params.id,
       { $set: newComplaint },
       { new: true }
     );
-    res.json({ complaint });
+
+    res.json({ complaint: updatedComplaint });
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Unexpected error occurred ");
+    res.status(500).send("Unexpected error occurred");
+  }
+});
+
+router.put("/upvote/:id", async (req, res) => {
+  try {
+    const complaint = await Complaint.findById(req.params.id);
+
+    if (!complaint) {
+      return res.status(404).json({ msg: "Complaint not found" });
+    }
+
+    // Increment upvotes count by 1
+    complaint.upvotes += 1;
+
+    const updatedComplaint = await complaint.save();
+
+    res.json(updatedComplaint);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server error");
   }
 });
 

@@ -27,15 +27,20 @@ const ComplaintSchema = new Schema({
     type: String,
     required: true,
   },
-  review:{
-    type:String,
+  review: {
+    type: String,
     required: false,
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
+  upvotes: {
+    type: Number,
+    default: 0,
+  },
 });
+
 const Complaint = mongoose.model("complaint", ComplaintSchema);
 
 module.exports = Complaint;

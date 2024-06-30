@@ -7,7 +7,6 @@ import "./Login.css";
 import "./Register.css";
 import "./Home.css";
 import "./ComplaintList.css";
-import "./ComplaintForm.css";
 
 const Home = () => {
   const [user, setUser] = useState(null);
@@ -15,13 +14,13 @@ const Home = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        navigate("/");
-        return;
-      }
-
       try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          navigate("/");
+          return;
+        }
+
         const response = await fetch("http://localhost:5000/api/auth/getuser", {
           method: "GET",
           headers: {
@@ -29,16 +28,22 @@ const Home = () => {
             "auth-token": token,
           },
         });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user");
+        }
+
         const data = await response.json();
         setUser(data);
       } catch (error) {
         console.error("Error fetching user:", error);
         // Handle error (redirect, show message, etc.)
+        navigate("/");
       }
     };
 
     fetchUser();
-  }, [navigate]);
+  }, []); // Empty dependency array ensures this effect runs once on mount
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -65,8 +70,9 @@ const Home = () => {
         </button>
       </div>
       <div className="complaint-section">
-        <ComplaintForm />
-        <ComplaintList />
+        {!user?.isAdmin && <ComplaintForm />}{" "}
+        {/* Render ComplaintForm only if not admin */}
+        <ComplaintList user={user} />
       </div>
     </div>
   );
