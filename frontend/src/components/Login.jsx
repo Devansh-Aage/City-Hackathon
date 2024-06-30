@@ -1,6 +1,6 @@
+// Login.js
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import "./Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -26,34 +26,42 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2 className="login-title">Login</h2>
+    <div className="flex justify-center items-center h-screen">
+      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email address:</label>
+          <div className="mb-4">
+            <label className="block mb-2">Email address:</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div className="form-group">
-            <label>Password:</label>
+          <div className="mb-6">
+            <label className="block mb-2">Password:</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <button type="submit" className="login-button">
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors"
+          >
             Submit
           </button>
         </form>
-        <p className="register-link">
-          Don't have an account? <Link to="/register">Register here</Link>
+        <p className="mt-4 text-center">
+          Don't have an account?{" "}
+          <Link to="/register" className="text-blue-500 font-bold hover:underline">
+            Register here
+          </Link>
         </p>
       </div>
     </div>
