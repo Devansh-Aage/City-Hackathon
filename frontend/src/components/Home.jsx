@@ -17,7 +17,7 @@ const Home = () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) {
-          navigate("/");
+          navigate("/login");
           return;
         }
 
@@ -38,7 +38,7 @@ const Home = () => {
       } catch (error) {
         console.error("Error fetching user:", error);
         // Handle error (redirect, show message, etc.)
-        navigate("/");
+        navigate("/login");
       }
     };
 
@@ -47,7 +47,7 @@ const Home = () => {
 
   const logout = () => {
     localStorage.removeItem("token");
-    navigate("/");
+    navigate("/login");
   };
 
   return (
