@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import "./Register.css";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -64,44 +63,48 @@ const Register = () => {
   };
 
   return (
-    <div className="register-container">
-      <div className="register-box">
-        <h2 className="register-title">Register</h2>
+    <div className="flex justify-center items-center h-full ">
+      <div className="w-full max-w-md bg-white/20 backdrop-blur-md p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold mb-6 text-white text-center">Register</h2>
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Name:</label>
+          <div className="mb-4">
+            <label className="block text-white">Name:</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
+              className="w-full p-2 border border-gray-300 rounded mt-1"
             />
           </div>
-          <div className="form-group">
-            <label>Email address:</label>
+          <div className="mb-4">
+            <label className="block text-white">Email address:</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className="w-full p-2 border border-gray-300 rounded mt-1"
             />
           </div>
-          <div className="form-group">
-            <label>Password:</label>
+          <div className="mb-4">
+            <label className="block text-white">Password:</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              className="w-full p-2 border border-gray-300 rounded mt-1"
             />
           </div>
           {isAdmin && (
-            <div className="form-group">
-              <label>Department:</label>
+            <div className="mb-4">
+              <label className="block text-white">Department:</label>
               <select
                 value={dept}
                 onChange={(e) => setDept(e.target.value)}
                 required
+                className="w-full p-2 border border-gray-300 rounded mt-1"
               >
                 <option value="">Select Department</option>
                 <option value="road">Road</option>
@@ -109,22 +112,29 @@ const Register = () => {
               </select>
             </div>
           )}
-          <div className="form-group">
-            <label>Role:</label>
+          <div className="mb-4">
+            <label className="block text-white">Role:</label>
             <select
               value={isAdmin ? "admin" : "user"}
               onChange={(e) => setIsAdmin(e.target.value === "admin")}
+              className="w-full p-2 border border-gray-300 rounded mt-1"
             >
               <option value="user">User</option>
               <option value="admin">Admin</option>
             </select>
           </div>
-          <button type="submit" className="register-button">
+          <button
+            type="submit"
+            className="w-full font-bold text-base bg-pink-700 text-white py-2 rounded hover:bg-pink-600"
+          >
             Submit
           </button>
         </form>
-        <p className="login-link">
-          Already have an account? <Link to="/login">Login here</Link>
+        <p className="mt-4 text-white text-center">
+          Already have an account?{" "}
+          <Link to="/login" className="text-pink-800 font-bold hover:underline">
+            Login here
+          </Link>
         </p>
       </div>
     </div>

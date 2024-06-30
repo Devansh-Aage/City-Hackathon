@@ -1,3 +1,4 @@
+// Home.js
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import ComplaintList from "./ComplaintList";
@@ -7,43 +8,11 @@ import "./Login.css";
 import "./Register.css";
 import "./Home.css";
 import "./ComplaintList.css";
+import Navbar from "./Navbar";
+import { Link } from "react-router-dom";
 
-const Home = () => {
-  const [user, setUser] = useState(null);
+const Home = ({user}) => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          navigate("/login");
-          return;
-        }
-
-        const response = await fetch("http://localhost:5000/api/auth/getuser", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "auth-token": token,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch user");
-        }
-
-        const data = await response.json();
-        setUser(data);
-      } catch (error) {
-        console.error("Error fetching user:", error);
-        // Handle error (redirect, show message, etc.)
-        navigate("/login");
-      }
-    };
-
-    fetchUser();
-  }, []); // Empty dependency array ensures this effect runs once on mount
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -54,30 +23,23 @@ const Home = () => {
   };
 
   return (
-    <div className="home-container">
-      <div className="home-box">
-        <h2 className="home-title">Home</h2>
-        {user ? (
-          <div>
-            <h3 className="welcome-text">
-              Welcome {user.isAdmin ? "Admin" : "User"}
-            </h3>
-            <p>Name: {user.name}</p>
-            <p>Email: {user.email}</p>
+    <div className="flex flex-col items-center justify-center h-full w-full">
+      <div className="w-full flex justify-between items-center p-4 sticky top-0 z-50">
+        <Navbar />
+        {user && (
+          <div className="hidden lg:flex items-center gap-4 bg-purple-50 rounded-lg p-2">
+            <div className="text-base font-semibold">{user?.name}</div>
+            <button
+              onClick={logout}
+              className="bg-red-500 text-white px-3 py-1 rounded-md text-sm hover:bg-red-600 transition-colors"
+            >
+              Logout
+            </button>
           </div>
-        ) : (
-          <p>Loading...</p>
         )}
-        <button className="logout-button" onClick={logout}>
-          Logout
-        </button>
-        <button className="map-button" onClick={goToMapPage}>
-          Go to Map
-        </button>
       </div>
-      <div className="complaint-section">
-        {!user?.isAdmin && <ComplaintForm user={user} />}{" "}
-        {/* Render ComplaintForm only if not admin */}
+      <div className="mt-5 w-4/5">
+        {!user?.isAdmin && <ComplaintForm user={user} />}
         <ComplaintList user={user} />
       </div>
     </div>

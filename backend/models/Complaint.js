@@ -50,6 +50,10 @@ const ComplaintSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  upvote: {
+    type: Number,
+    default:0
+  },
 });
 
 const Complaint = mongoose.model("complaint", ComplaintSchema);
