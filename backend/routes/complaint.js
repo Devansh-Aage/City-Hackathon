@@ -7,39 +7,34 @@ var jwt = require("jsonwebtoken");
 const fetchuser = require("../middleware/fetchuser");
 const router = express.Router();
 const User = require("../models/User");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
+// Complaint routes (complaintRoutes.js)
 router.post("/addcomplaints", fetchuser, async (req, res) => {
   try {
-    const { title, desc, dept, imgPath } = req.body;
-    //If there are errors , return bad requests and also errors
+    const { title, desc, dept, imgPath, latitude, longitude } = req.body;
+
+    // If there are errors, return bad requests and also errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    if (req.body.dept === "road") {
-      const complaint = new Complaint({
-        title,
-        desc,
-        imgPath,
-        dept,
-        user: req.user.id,
-      });
-      const savedComplaint = await complaint.save();
-      res.json(savedComplaint);
-    } else {
-      const complaint = new Complaint({
-        title,
-        desc,
-        dept,
-        user: req.user.id,
-      });
-      const savedComplaint = await complaint.save();
-      res.json(savedComplaint);
-    }
+
+    const complaint = new Complaint({
+      title,
+      desc,
+      dept,
+      imgPath,
+      latitude,
+      longitude,
+      user: req.user.id,
+    });
+
+    const savedComplaint = await complaint.save();
+    res.json(savedComplaint);
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Unexpected error occurred ");
+    res.status(500).send("Unexpected error occurred");
   }
 });
 
@@ -90,7 +85,6 @@ router.put("/reviewcomplaint/:id", async (req, res) => {
   }
 });
 
-
 router.put("/upvote/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -111,10 +105,10 @@ router.put("/upvote/:id", async (req, res) => {
 
     const updatedComplaint = await complaint.save();
 
-    res.json(updatedComplaint);
+    res.json({ msg: "Upvoted successfully" });
   } catch (error) {
-    console.error(error.message);
-    res.status(500).send("Server error");
+    console.error("Error upvoting complaint:", error);
+    res.status(500).send("Unexpected error occurred");
   }
 });
 

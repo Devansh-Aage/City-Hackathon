@@ -21,7 +21,13 @@ const ComplaintForm = ({user}) => {
             "Content-Type": "application/json",
             "auth-token": localStorage.getItem("token"),
           },
-          body: JSON.stringify({ title, desc, dept }),
+          body: JSON.stringify({
+            title,
+            desc,
+            dept,
+            latitude: user.latitude,
+            longitude: user.longitude,
+          }),
         }
       );
       const data = await response.json();

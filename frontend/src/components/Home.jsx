@@ -1,6 +1,6 @@
 // Home.js
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import ComplaintList from "./ComplaintList";
 import ComplaintForm from "./ComplaintForm";
 import "../App.css";
@@ -17,6 +17,9 @@ const Home = ({user}) => {
   const logout = () => {
     localStorage.removeItem("token");
     navigate("/login");
+  };
+  const goToMapPage = () => {
+    navigate("/map");
   };
 
   return (

@@ -58,7 +58,9 @@ const ComplaintList = ({ user }) => {
 
       const updatedComplaint = await response.json();
       const updatedComplaints = complaints.map((complaint) =>
-        complaint._id === id ? updatedComplaint : complaint
+        complaint._id === id
+          ? { ...complaint, upvotes: [...complaint.upvotes, user._id] }
+          : complaint
       );
       setComplaints(updatedComplaints);
     } catch (error) {
