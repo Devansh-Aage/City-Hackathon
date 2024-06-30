@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import bgImg from '../src/assets/bgImg.png'
+import bgImg from "../src/assets/bgImg.png";
 
 const Welcome = () => {
   return (
@@ -10,12 +10,12 @@ const Welcome = () => {
           Welcome To Smart City Portal
         </div>
         <div className="flex mt-5 items-center gap-4">
-          <Link>
+          <Link to={"/register"}>
             <div className="bg-purple-900 px-4 py-3 rounded-lg text-white text-base font-bold hover:bg-transparent hover:border-2 hover:border-purple-900">
               Sign Up
             </div>
           </Link>
-          <Link>
+          <Link to={"/login"}>
             <div className="bg-purple-900 px-4 py-3 rounded-lg text-white text-base font-bold hover:bg-transparent hover:border-2 hover:border-purple-900">
               Login
             </div>
