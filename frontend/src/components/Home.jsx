@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import ComplaintList from "./ComplaintList";
 import ComplaintForm from "./ComplaintForm";
 import "../App.css";
@@ -49,6 +49,9 @@ const Home = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
+  const goToMapPage = () => {
+    navigate("/map");
+  };
 
   return (
     <div className="home-container">
@@ -68,9 +71,12 @@ const Home = () => {
         <button className="logout-button" onClick={logout}>
           Logout
         </button>
+        <button className="map-button" onClick={goToMapPage}>
+          Go to Map
+        </button>
       </div>
       <div className="complaint-section">
-        {!user?.isAdmin && <ComplaintForm />}{" "}
+        {!user?.isAdmin && <ComplaintForm user={user} />}{" "}
         {/* Render ComplaintForm only if not admin */}
         <ComplaintList user={user} />
       </div>

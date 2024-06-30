@@ -11,35 +11,34 @@ const router = express.Router();
 router.post(
   "/createuser",
   [
-    //Validating User Details
+    // Validating User Details
     body("email", "Enter a valid e-mail").isEmail(),
     body("name", "Username: minimum 3 characters").isLength({ min: 3 }),
     body("password", "Password: minimum 6 characters").isLength({ min: 6 }),
   ],
   async (req, res) => {
     let success = false;
-    //If there are errors , return bad requests and also errors
+    // If there are errors, return bad requests and also errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ success, errors: errors.array() });
     }
-    //Check if the email already exists
+    // Check if the email already exists
     try {
       let user = await User.findOne({ email: req.body.email });
       if (user) {
         return res.status(400).json({ error: "This email is already in use" });
       }
       const salt = await bcrypt.genSalt(10);
-
-      secPass = await bcrypt.hash(req.body.password, salt);
-      //Create User
+      const secPass = await bcrypt.hash(req.body.password, salt);
+      // Create User
       user = await User.create({
         name: req.body.name,
         email: req.body.email,
         password: secPass,
+        isAdmin: false,
         latitude: req.body.latitude,
         longitude: req.body.longitude,
-        isAdmin: false,
       });
       const data = {
         user: {
@@ -48,12 +47,10 @@ router.post(
       };
       const authToken = jwt.sign(data, process.env.JWT_SECRET);
       success = true;
-      // res.json(user)
-      res.json({ success, authToken: authToken });
+      res.json({ success, authToken });
     } catch (error) {
-      //Display Errors
       console.error(error.message);
-      res.status(500).send("Unexpected error occurred ");
+      res.status(500).send("Unexpected error occurred");
     }
   }
 );

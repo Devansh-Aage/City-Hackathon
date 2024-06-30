@@ -7,11 +7,33 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
-  const [dept, setDept] = useState(""); // New state for department
+  const [dept, setDept] = useState(""); // State for department
+  const [latitude, setLatitude] = useState(null); // State for latitude
+  const [longitude, setLongitude] = useState(null); // State for longitude
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Fetch geolocation
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+          registerUser(position.coords.latitude, position.coords.longitude);
+        },
+        (error) => {
+          console.error("Error getting geolocation:", error);
+          alert("Failed to fetch geolocation. Please enter manually.");
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  };
+
+  const registerUser = async (lat, lng) => {
     const response = await fetch(
       isAdmin
         ? "http://localhost:5000/api/auth/createadmin"
@@ -26,7 +48,9 @@ const Register = () => {
           email,
           password,
           isAdmin,
-          dept: isAdmin ? dept : "", // Pass department only if isAdmin is true
+          dept: isAdmin ? dept : "",
+          latitude: lat,
+          longitude: lng,
         }),
       }
     );
@@ -71,7 +95,7 @@ const Register = () => {
               required
             />
           </div>
-          {isAdmin && ( // Display department field only if isAdmin is true
+          {isAdmin && (
             <div className="form-group">
               <label>Department:</label>
               <select
@@ -80,8 +104,8 @@ const Register = () => {
                 required
               >
                 <option value="">Select Department</option>
-                <option value="road">road</option>
-                <option value="water">water</option>
+                <option value="road">Road</option>
+                <option value="water">Water</option>
               </select>
             </div>
           )}

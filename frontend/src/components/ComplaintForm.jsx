@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ComplaintForm.css";
 
-const ComplaintForm = () => {
+const ComplaintForm = ({ user }) => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [dept, setDept] = useState("road"); // Default department
@@ -21,7 +21,13 @@ const ComplaintForm = () => {
             "Content-Type": "application/json",
             "auth-token": localStorage.getItem("token"),
           },
-          body: JSON.stringify({ title, desc, dept }),
+          body: JSON.stringify({
+            title,
+            desc,
+            dept,
+            latitude: user.latitude,
+            longitude: user.longitude,
+          }),
         }
       );
       const data = await response.json();
